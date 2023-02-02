@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
-import User from "../models/userModel.js";
+import Admin from "../models/adminModel.js";
 const protect = asyncHandler(async (req, res, next) => {
   let token;
   const authHeader = req.headers.authorization;
@@ -11,16 +11,16 @@ const protect = asyncHandler(async (req, res, next) => {
 
       const decoded = jwt.verify(token, "sdfgsdfgaskdjfli43345345ghfd");
 
-      req.user = await User.findById(decoded.id).select("-password");
+      req.admin = await Admin.findById(decoded.id).select("-password");
       next();
     } catch (error) {
       res.status(401);
-      throw new Error("Not authorized, invalid token");
+      throw new Error("Not authorized as Admin, invalid token");
     }
   }
   if (!token) {
     res.status(401);
-    throw new Error("Not authorized, no token found");
+    throw new Error("Not authorized as Admin, no token found");
   }
 });
 

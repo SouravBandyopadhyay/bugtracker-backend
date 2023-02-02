@@ -4,11 +4,11 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js"
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 const __dirname = path.resolve();
 dotenv.config({ path: "./.env" });
-
 
 if (process.env.NODE_ENV === undefined) {
   dotenv.config({ path: "./.env" });
@@ -28,12 +28,9 @@ app.use(
   })
 );
 
-
-
-
-
 // API routes
 app.use("/api/user", userRoutes);
+app.use("/api/admin",adminRoutes)
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/build")));
